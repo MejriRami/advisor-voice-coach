@@ -33,16 +33,16 @@ Two tools for insurance advisors, built around one rule: **answer from the docum
 python -m eval.run_eval
 ```
 
-Results, **offline mode** (TF-IDF retrieval + extractive answers, no LLM, no API key):
+| Metric | **LLM mode** (OpenAI embeddings + gpt-4o-mini) | Offline mode (TF-IDF + extractive, no API key) |
+|---|---|---|
+| Retrieval hit@1 / hit@3 | 95.8 % / 100 % | 95.8 % / 100 % |
+| Answer accuracy (all expected facts present) | **100 %** | 83.3 % |
+| **Precision when answering** | **100 %** | 90.9 % |
+| Answers with a citation | 100 % | 100 % |
+| Out-of-scope questions handed to a human | **4 / 4** | 4 / 4 |
+| In-scope questions wrongly handed off | **0 / 24** | 2 / 24 |
 
-| Metric | Result |
-|---|---|
-| Retrieval hit@1 / hit@3 | 95.8 % / 100 % |
-| Answer accuracy (all expected facts present) | 83.3 % |
-| **Precision when answering** | **90.9 %** |
-| Answers with a citation | 100 % |
-| Out-of-scope questions handed to a human | 100 % (4/4) |
-| In-scope questions handed off | 2 / 24 |
+**Layered guardrails, measured.** In LLM mode the retrieval gate alone caught only 1 of the 4 out-of-scope questions (the off-topic one, score 0.28). The other three (an exact price, an uncovered product, an investment question) retrieved plausible passages (0.34–0.47) and were stopped by the **model's grounded refusal**. Neither layer is enough alone; together they reach 4/4 without a single wrong handoff. The lowest-scoring in-scope question still scored 0.54, so the gate (0.30) could be raised to about 0.50 for an extra margin.
 
 What the measurement taught: with keyword retrieval alone, only **1 of 4** out-of-scope questions was handed off (*"conseiller un placement en bourse"* matched the advisor guide on the word *conseiller*). Adding the coverage check brought it to 4/4, and the two questions it now hands off were ones the system had been **answering wrongly**: fewer wrong answers, same accuracy. For an insurer, a handoff is better than a wrong answer, which is why *precision when answering* is the headline metric.
 

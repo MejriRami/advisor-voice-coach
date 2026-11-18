@@ -22,7 +22,7 @@ HANDOFF_MESSAGE = ("Je ne trouve pas cette information dans nos documents. "
 THRESHOLDS = {"tfidf": 0.12, "openai": 0.30}
 
 SYSTEM_PROMPT = """Tu es l'assistant interne des conseillers de Nova Assurances.
-Réponds en français, en 1 à 3 phrases claires, UNIQUEMENT à partir des extraits numérotés fournis.
+Réponds en français, en 1 à 3 phrases claires, en texte simple (sans Markdown), UNIQUEMENT à partir des extraits numérotés fournis.
 Cite chaque information avec le numéro de l'extrait entre crochets, par exemple [1].
 N'invente jamais un montant, un délai ou une garantie. Ne donne pas de tarif.
 Si les extraits ne permettent pas de répondre avec certitude, réponds exactement : HANDOFF"""
