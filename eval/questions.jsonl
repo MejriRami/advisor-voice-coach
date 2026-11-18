@@ -1,0 +1,28 @@
+{"id": "q01", "question": "Quelle est la franchise dommages pour un conducteur qui a son permis depuis 2 ans ?", "expected_doc": "01_auto_conditions", "must_contain": ["600"]}
+{"id": "q02", "question": "Combien coûte la franchise bris de glace ?", "expected_doc": "01_auto_conditions", "must_contain": ["50"]}
+{"id": "q03", "question": "De combien augmente le bonus-malus après un sinistre responsable ?", "expected_doc": "01_auto_conditions", "must_contain": ["25"]}
+{"id": "q04", "question": "Le véhicule de remplacement est-il inclus en formule Tiers Plus ?", "expected_doc": "01_auto_conditions", "must_contain": ["tous risques"]}
+{"id": "q05", "question": "Combien de jours de véhicule de remplacement après un vol ?", "expected_doc": "01_auto_conditions", "must_contain": ["15"]}
+{"id": "q06", "question": "Un jeune conducteur non déclaré au contrat, que se passe-t-il en cas de sinistre ?", "expected_doc": "01_auto_conditions", "must_contain": ["500"]}
+{"id": "q07", "question": "Dans quel délai faut-il déclarer un dégât des eaux ?", "expected_doc": "02_habitation", "must_contain": ["5 jours"]}
+{"id": "q08", "question": "Jusqu'à quel montant la recherche de fuite est-elle remboursée ?", "expected_doc": "02_habitation", "must_contain": ["800"]}
+{"id": "q09", "question": "Les bijoux sont-ils couverts en cas de vol ?", "expected_doc": "02_habitation", "must_contain": ["20"]}
+{"id": "q10", "question": "Quel est le préavis pour résilier le contrat habitation à l'échéance ?", "expected_doc": "02_habitation", "must_contain": ["2 mois"]}
+{"id": "q11", "question": "Dans quel délai le client doit-il porter plainte après un cambriolage ?", "expected_doc": "02_habitation", "must_contain": ["48"]}
+{"id": "q12", "question": "À partir de quel montant de dommages un expert est-il mandaté ?", "expected_doc": "03_sinistres_procedure", "must_contain": ["1 500"]}
+{"id": "q13", "question": "Combien de temps pour envoyer le constat amiable ?", "expected_doc": "03_sinistres_procedure", "must_contain": ["5 jours"]}
+{"id": "q14", "question": "Sous combien de jours l'indemnisation est-elle versée après accord ?", "expected_doc": "03_sinistres_procedure", "must_contain": ["15"]}
+{"id": "q15", "question": "Le client peut-il contester l'avis de l'expert ?", "expected_doc": "03_sinistres_procedure", "must_contain": ["contre-expertise"]}
+{"id": "q16", "question": "Quel est le délai de carence pour la maternité ?", "expected_doc": "04_sante_complementaire", "must_contain": ["9 mois"]}
+{"id": "q17", "question": "Quel est le plafond lunettes en formule Confort ?", "expected_doc": "04_sante_complementaire", "must_contain": ["300"]}
+{"id": "q18", "question": "Un nouveau-né a-t-il un délai de carence ?", "expected_doc": "04_sante_complementaire", "must_contain": ["30 jours"]}
+{"id": "q19", "question": "Combien rembourse la chambre particulière en Premium ?", "expected_doc": "04_sante_complementaire", "must_contain": ["120"]}
+{"id": "q20", "question": "Que faire face à un client mécontent ?", "expected_doc": "05_devoir_de_conseil", "must_contain": ["reformul"]}
+{"id": "q21", "question": "Dans quel délai répond-on à une réclamation écrite ?", "expected_doc": "05_devoir_de_conseil", "must_contain": ["30 jours"]}
+{"id": "q22", "question": "Le conseiller peut-il promettre une indemnisation avant l'expertise ?", "expected_doc": "05_devoir_de_conseil", "must_contain": ["expertise"]}
+{"id": "q23", "question": "Quels sont les frais pour un paiement mensuel ?", "expected_doc": "06_faq_paiement", "must_contain": ["3"]}
+{"id": "q24", "question": "Quand les garanties sont-elles suspendues en cas d'impayé ?", "expected_doc": "06_faq_paiement", "must_contain": ["30 jours"]}
+{"id": "o01", "question": "Quel est le tarif exact d'une assurance Tous Risques pour une Peugeot 208 ?", "expected_doc": null, "must_contain": [], "out_of_scope": true}
+{"id": "o02", "question": "Proposez-vous une assurance pour mon chien ?", "expected_doc": null, "must_contain": [], "out_of_scope": true}
+{"id": "o03", "question": "Quelle est la météo prévue demain à Tunis ?", "expected_doc": null, "must_contain": [], "out_of_scope": true}
+{"id": "o04", "question": "Pouvez-vous me conseiller un placement en bourse ?", "expected_doc": null, "must_contain": [], "out_of_scope": true}

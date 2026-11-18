@@ -1,0 +1,212 @@
+<!doctype html>
+<html lang="fr">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Coach Conseiller</title>
+<style>
+  :root {
+    --bg: #f5f7fa; --surface: #fff; --ink: #14263a; --muted: #5b6f82; --line: #dde5ed;
+    --brand: #0b5cad; --brand-soft: #e8f1fb; --ok: #12805c; --ok-soft: #e6f5ef; --warn: #b4540a; --warn-soft: #fdf0e3;
+    --radius: 10px; --shadow: 0 1px 2px rgba(16,24,40,.05);
+  }
+  * { box-sizing: border-box; }
+  body { margin: 0; background: var(--bg); color: var(--ink); font: 15px/1.55 "Segoe UI", Inter, system-ui, sans-serif; }
+  header { background: var(--surface); border-bottom: 1px solid var(--line); }
+  .bar { max-width: 1040px; margin: 0 auto; padding: 14px 20px; display: flex; align-items: center; gap: 16px; }
+  .logo { font-weight: 650; letter-spacing: -.01em; }
+  .logo small { display: block; font-weight: 400; color: var(--muted); font-size: 12px; }
+  .status { margin-left: auto; font-size: 12px; color: var(--muted); display: flex; gap: 8px; }
+  .pill { border: 1px solid var(--line); border-radius: 999px; padding: 2px 10px; background: var(--surface); }
+  .tabs { max-width: 1040px; margin: 0 auto; padding: 0 20px; display: flex; gap: 4px; }
+  .tab { border: 0; background: none; padding: 10px 14px; font: inherit; color: var(--muted); cursor: pointer; border-bottom: 2px solid transparent; }
+  .tab.active { color: var(--brand); border-bottom-color: var(--brand); font-weight: 600; }
+  main { max-width: 1040px; margin: 24px auto; padding: 0 20px; }
+  .card { background: var(--surface); border: 1px solid var(--line); border-radius: var(--radius); box-shadow: var(--shadow); padding: 20px; }
+  h2 { margin: 0 0 4px; font-size: 18px; font-weight: 600; }
+  .sub { margin: 0 0 16px; color: var(--muted); }
+  .row { display: flex; gap: 8px; }
+  input, select { flex: 1; font: inherit; padding: 10px 12px; border: 1px solid #cdd8e3; border-radius: 8px; background: #fff; color: var(--ink); }
+  input:focus, select:focus { outline: none; border-color: var(--brand); box-shadow: 0 0 0 3px rgba(11,92,173,.12); }
+  button.primary, button.secondary { font: inherit; font-weight: 600; border-radius: 8px; padding: 10px 16px; cursor: pointer; display: inline-flex; align-items: center; gap: 6px; }
+  button.primary { background: var(--brand); color: #fff; border: 1px solid var(--brand); }
+  button.secondary { background: #fff; color: var(--brand); border: 1px solid #c4d4e4; }
+  button:disabled { opacity: .5; cursor: not-allowed; }
+  .examples { margin-top: 10px; display: flex; flex-wrap: wrap; gap: 6px; }
+  .chip { border: 1px solid var(--line); background: #fff; border-radius: 999px; padding: 4px 10px; font-size: 13px; color: var(--muted); cursor: pointer; }
+  .answer { margin-top: 18px; padding: 16px; border-radius: var(--radius); border: 1px solid var(--line); }
+  .answer.ok { background: var(--ok-soft); border-color: #bfe3d3; }
+  .answer.handoff { background: var(--warn-soft); border-color: #f2d2b1; }
+  .label { font-size: 12px; font-weight: 600; text-transform: uppercase; letter-spacing: .05em; margin-bottom: 6px; }
+  .answer.ok .label { color: var(--ok); } .answer.handoff .label { color: var(--warn); }
+  .sources { margin: 10px 0 0; padding-left: 18px; color: var(--muted); font-size: 13px; }
+  .grid { display: grid; grid-template-columns: 320px 1fr; gap: 16px; }
+  .persona { border: 1px solid var(--line); border-radius: 8px; padding: 12px; margin-bottom: 8px; cursor: pointer; background: #fff; }
+  .persona.selected { border-color: var(--brand); background: var(--brand-soft); }
+  .persona b { display: block; } .persona span { color: var(--muted); font-size: 13px; }
+  .chat { height: 360px; overflow-y: auto; border: 1px solid var(--line); border-radius: 8px; padding: 12px; background: #fbfcfe; }
+  .msg { max-width: 80%; margin: 6px 0; padding: 9px 12px; border-radius: 10px; }
+  .msg.client { background: #fff; border: 1px solid var(--line); }
+  .msg.advisor { background: var(--brand); color: #fff; margin-left: auto; }
+  .msg small { display: block; opacity: .7; font-size: 11px; margin-bottom: 2px; }
+  .controls { display: flex; gap: 8px; margin-top: 10px; }
+  .mic.listening { background: #c62828; border-color: #c62828; }
+  .score { font-size: 32px; font-weight: 650; }
+  .crit { display: flex; gap: 8px; padding: 6px 0; border-bottom: 1px solid var(--line); font-size: 14px; }
+  .crit .dot { width: 18px; flex-shrink: 0; font-weight: 700; }
+  .crit.met .dot { color: var(--ok); } .crit.miss .dot { color: #c62828; }
+  .hidden { display: none; }
+  .note { font-size: 12px; color: var(--muted); margin-top: 8px; }
+  @media (max-width: 760px) { .grid { grid-template-columns: 1fr; } }
+</style>
+</head>
+<body>
+<header>
+  <div class="bar">
+    <div class="logo">Coach Conseiller<small>Nova Assurances — démonstration, données fictives</small></div>
+    <div class="status"><span class="pill" id="mode">…</span></div>
+  </div>
+  <div class="tabs">
+    <button class="tab active" data-tab="ask">Assistant documentaire</button>
+    <button class="tab" data-tab="sim">Simulateur client vocal</button>
+  </div>
+</header>
+
+<main>
+  <section id="tab-ask" class="card">
+    <h2>Poser une question sur nos contrats</h2>
+    <p class="sub">Réponses tirées uniquement des documents, avec sources. Sinon, transfert à un conseiller.</p>
+    <div class="row">
+      <input id="question" placeholder="Ex. : Dans quel délai faut-il déclarer un dégât des eaux ?">
+      <button class="primary" id="askBtn">Demander</button>
+    </div>
+    <div class="examples" id="examples"></div>
+    <div id="answer"></div>
+  </section>
+
+  <section id="tab-sim" class="hidden">
+    <div class="grid">
+      <div class="card">
+        <h2>Scénario</h2>
+        <p class="sub">Choisissez un client à servir.</p>
+        <div id="personas"></div>
+        <button class="primary" id="startBtn" disabled>Démarrer l'appel</button>
+        <p class="note">Micro : Chrome ou Edge. Le client vous répond à voix haute.</p>
+      </div>
+      <div class="card">
+        <h2 id="simTitle">Conversation</h2>
+        <p class="sub" id="simSub">Démarrez un appel pour commencer.</p>
+        <div class="chat" id="chat"></div>
+        <div class="controls">
+          <button class="primary mic" id="micBtn" disabled>Parler</button>
+          <input id="typed" placeholder="…ou tapez votre réponse" disabled>
+          <button class="secondary" id="sendBtn" disabled>Envoyer</button>
+          <button class="secondary" id="debriefBtn" disabled>Terminer et évaluer</button>
+        </div>
+        <div id="debrief"></div>
+      </div>
+    </div>
+  </section>
+</main>
+
+<script>
+const $ = (id) => document.getElementById(id);
+const post = (url, body) => fetch(url, {method: "POST", headers: {"Content-Type": "application/json"}, body: JSON.stringify(body)}).then(r => r.json());
+const esc = (s) => String(s).replace(/[&<>"]/g, c => ({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;"}[c]));
+
+document.querySelectorAll(".tab").forEach(t => t.onclick = () => {
+  document.querySelectorAll(".tab").forEach(x => x.classList.toggle("active", x === t));
+  $("tab-ask").classList.toggle("hidden", t.dataset.tab !== "ask");
+  $("tab-sim").classList.toggle("hidden", t.dataset.tab !== "sim");
+});
+
+fetch("/api/health").then(r => r.json()).then(h => {
+  $("mode").textContent = (h.llm ? "LLM activé" : "Mode hors ligne (sans LLM)") + " · recherche " + h.retrieval + " · " + h.chunks + " sections";
+});
+
+// ---- Assistant ----
+const EXAMPLES = ["Quel est le délai de carence pour la maternité ?", "À partir de quel montant un expert est-il mandaté ?",
+                  "Les bijoux sont-ils couverts en cas de vol ?", "Quel est le tarif exact pour une Peugeot 208 ?"];
+EXAMPLES.forEach(q => { const c = document.createElement("button"); c.className = "chip"; c.textContent = q;
+  c.onclick = () => { $("question").value = q; ask(); }; $("examples").appendChild(c); });
+
+async function ask() {
+  const q = $("question").value.trim(); if (!q) return;
+  $("askBtn").disabled = true; $("answer").innerHTML = "";
+  const a = await post("/api/ask", {question: q});
+  $("askBtn").disabled = false;
+  const sources = a.citations.map(c => `<li>[${c.n}] ${esc(c.source)}</li>`).join("");
+  $("answer").innerHTML = `<div class="answer ${a.handoff ? "handoff" : "ok"}">
+     <div class="label">${a.handoff ? "Transfert à un conseiller" : "Réponse sourcée"}</div>
+     <div>${esc(a.answer)}</div>${sources ? `<ul class="sources">${sources}</ul>` : ""}</div>`;
+}
+$("askBtn").onclick = ask;
+$("question").onkeydown = (e) => { if (e.key === "Enter") ask(); };
+
+// ---- Simulator ----
+let persona = null, session = null;
+fetch("/api/personas").then(r => r.json()).then(list => list.forEach(p => {
+  const d = document.createElement("div"); d.className = "persona";
+  d.innerHTML = `<b>${esc(p.title)}</b><span>${esc(p.client)} · ${esc(p.mood)}</span>`;
+  d.onclick = () => { document.querySelectorAll(".persona").forEach(x => x.classList.remove("selected"));
+    d.classList.add("selected"); persona = p; $("startBtn").disabled = false; };
+  $("personas").appendChild(d);
+}));
+
+function addMsg(role, text) {
+  const m = document.createElement("div"); m.className = "msg " + role;
+  m.innerHTML = `<small>${role === "client" ? esc(persona.client) : "Vous"}</small>${esc(text)}`;
+  $("chat").appendChild(m); $("chat").scrollTop = $("chat").scrollHeight;
+}
+
+function speak(text) {
+  if (!("speechSynthesis" in window)) return;
+  const u = new SpeechSynthesisUtterance(text); u.lang = "fr-FR"; u.rate = 1.02;
+  const fr = speechSynthesis.getVoices().find(v => v.lang.startsWith("fr")); if (fr) u.voice = fr;
+  speechSynthesis.cancel(); speechSynthesis.speak(u);
+}
+
+$("startBtn").onclick = async () => {
+  const s = await post("/api/sim/start", {persona_id: persona.id});
+  session = s.session_id; $("chat").innerHTML = ""; $("debrief").innerHTML = "";
+  $("simTitle").textContent = persona.title; $("simSub").textContent = persona.client + " vous appelle.";
+  ["micBtn", "typed", "sendBtn", "debriefBtn"].forEach(id => $(id).disabled = false);
+  addMsg("client", s.reply); speak(s.reply);
+};
+
+async function sendAdvisor(text) {
+  if (!text.trim() || !session) return;
+  addMsg("advisor", text); $("typed").value = "";
+  const r = await post("/api/sim/turn", {session_id: session, text});
+  addMsg("client", r.reply); speak(r.reply);
+}
+$("sendBtn").onclick = () => sendAdvisor($("typed").value);
+$("typed").onkeydown = (e) => { if (e.key === "Enter") sendAdvisor($("typed").value); };
+
+const Recognition = window.SpeechRecognition || window.webkitSpeechRecognition;
+if (Recognition) {
+  const rec = new Recognition(); rec.lang = "fr-FR"; rec.interimResults = false;
+  rec.onresult = (e) => sendAdvisor(e.results[0][0].transcript);
+  rec.onend = () => { $("micBtn").classList.remove("listening"); $("micBtn").textContent = "Parler"; };
+  $("micBtn").onclick = () => { speechSynthesis.cancel(); rec.start();
+    $("micBtn").classList.add("listening"); $("micBtn").textContent = "J'écoute…"; };
+} else {
+  $("micBtn").title = "Reconnaissance vocale non disponible dans ce navigateur";
+  $("micBtn").onclick = () => alert("Reconnaissance vocale non disponible : utilisez Chrome ou Edge, ou tapez votre réponse.");
+}
+
+$("debriefBtn").onclick = async () => {
+  $("debriefBtn").disabled = true;
+  const d = await post("/api/sim/debrief", {session_id: session});
+  const crit = (d.criteria || []).map(c => `<div class="crit ${c.met ? "met" : "miss"}"><span class="dot">${c.met ? "✓" : "✕"}</span>
+      <span>${esc(c.criterion)}${c.evidence ? `<br><small class="note">${esc(c.evidence)}</small>` : ""}</span></div>`).join("");
+  const errors = (d.factual_errors || []).map(e => `<li>${esc(e.claim)} → ${esc(e.correction)}</li>`).join("");
+  const tips = (d.tips || []).map(t => `<li>${esc(t)}</li>`).join("");
+  $("debrief").innerHTML = `<div class="answer ok" style="background:#fff">
+     <div class="label" style="color:var(--brand)">Évaluation</div><div class="score">${d.score}/100</div>${crit}
+     ${errors ? `<p class="label" style="margin-top:12px;color:#c62828">Erreurs factuelles</p><ul class="sources">${errors}</ul>` : ""}
+     ${tips ? `<p class="label" style="margin-top:12px">Conseils</p><ul class="sources">${tips}</ul>` : ""}</div>`;
+};
+</script>
+</body>
+</html>
