@@ -1,7 +1,8 @@
 """Offline tests (no API key): retrieval, guardrails, evaluation gate, API."""
 import os
 
-os.environ.pop("OPENAI_API_KEY", None)
+# Force offline mode even when a local .env holds a key (load_dotenv never overrides).
+os.environ["OPENAI_API_KEY"] = ""
 
 import pytest  # noqa: E402
 from fastapi.testclient import TestClient  # noqa: E402
