@@ -5,7 +5,7 @@ Two tools for insurance advisors, built around one rule: **answer from the docum
 1. **Assistant documentaire.** Advisors ask questions about the contracts and get a short answer **with citations**, or an explicit handoff when the documents don't contain the answer.
 2. **Simulateur client vocal.** The advisor practises a phone call **by voice** with a simulated client (first car accident, an angry customer, a young family choosing health cover). At the end, the call is **scored** against the company's advice checklist, and the facts the advisor stated are checked against the documents.
 
-**▶ [Demo video, about 2 min, French narration](https://github.com/MejriRami/advisor-voice-coach/releases/download/demo/1_Coach_Conseiller.mp4)** · fictional data
+**▶ [Demo video, about 2 min](https://mejrirami.github.io/demos/#coach)**
 
 > **Résumé (FR)** : un assistant qui répond aux conseillers uniquement à partir des documents (avec sources, sinon transfert à un humain), et un simulateur de client à la voix pour entraîner les conseillers, avec une évaluation de l'appel. Toutes les données sont fictives (« Nova Assurances »).
 
